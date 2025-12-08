@@ -10,6 +10,7 @@ import styles from "./postSlug.module.css";
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
 
+  // Least priviledge
   const { frontmatter } = await loadBlogPost(postSlug);
 
   return {
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }) {
 
 async function BlogPost({ params }) {
   const { postSlug } = await params;
+  // Least priviledge: no delegated
   const { frontmatter, content } = await loadBlogPost(postSlug);
   return (
     <article className={styles.wrapper}>
