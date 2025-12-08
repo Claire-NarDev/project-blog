@@ -11,16 +11,10 @@ async function Home() {
     <div className={styles.wrapper}>
       <h1 className={styles.mainHeading}>Latest Content:</h1>
 
-      {blogList.map(({ slug, title, abstract, publishedOn }) => {
-        return (
-          <BlogSummaryCard
-            key={slug}
-            slug={slug}
-            title={title}
-            abstract={abstract}
-            publishedOn={publishedOn}
-          />
-        );
+      {/* Instead of title, abstract, publishedOn, we put ...delegated.
+      By doing so, if we add other tags to a blog element, it is automatically added here. */}
+      {blogList.map(({ slug, ...delegated }) => {
+        return <BlogSummaryCard key={slug} slug={slug} {...delegated} />;
       })}
     </div>
   );
