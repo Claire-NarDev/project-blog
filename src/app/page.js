@@ -6,19 +6,19 @@ import styles from "./homepage.module.css";
 
 async function Home() {
   const blogList = await getBlogPostList();
-  
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.mainHeading}>Latest Content:</h1>
 
-      {blogList.map((blog) => {
+      {blogList.map(({ slug, title, abstract, publishedOn }) => {
         return (
           <BlogSummaryCard
-            key={blog.slug}
-            slug={blog.slug}
-            title={blog.title}
-            abstract={blog.abstract}
-            publishedOn={blog.publishedOn}
+            key={slug}
+            slug={slug}
+            title={title}
+            abstract={abstract}
+            publishedOn={publishedOn}
           />
         );
       })}

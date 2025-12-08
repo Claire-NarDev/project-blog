@@ -10,25 +10,25 @@ import styles from "./postSlug.module.css";
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
 
-  const blogPost = await loadBlogPost(postSlug);
+  const { frontmatter } = await loadBlogPost(postSlug);
 
   return {
-    title: `${blogPost.frontmatter.title}`,
-    description: `${blogPost.frontmatter.abstract}`,
+    title: `${frontmatter.title}`,
+    description: `${frontmatter.abstract}`,
   };
 }
 
 async function BlogPost({ params }) {
   const { postSlug } = await params;
-  const blogPost = await loadBlogPost(postSlug);
+  const { frontmatter, content } = await loadBlogPost(postSlug);
   return (
     <article className={styles.wrapper}>
       <BlogHero
-        title={blogPost.frontmatter.title}
-        publishedOn={blogPost.frontmatter.publishedOn}
+        title={frontmatter.title}
+        publishedOn={frontmatter.publishedOn}
       />
       <div className={styles.page}>
-        <MDXRemote source={blogPost.content}></MDXRemote>
+        <MDXRemote source={content}></MDXRemote>
       </div>
     </article>
   );
