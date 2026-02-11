@@ -9,7 +9,7 @@ import SliderControl from "@/components/SliderControl";
 import Equation from "./Equation";
 import styles from "./DivisionGroupsDemo.module.css";
 
-import { motion, LayoutGroup, MotionConfig } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 
 function DivisionGroupsDemo({
   numOfItems = 12,
@@ -37,64 +37,63 @@ function DivisionGroupsDemo({
         };
 
   return (
-    <MotionConfig reducedMotion="user">
-      <Card as="section" className={styles.wrapper}>
-        <header className={styles.header}>
-          <SliderControl
-            label="Number of Groups"
-            className={styles.slider}
-            step={1}
-            min={1}
-            max={4}
-            value={numOfGroups}
-            onChange={(ev) => setNumOfGroups(Number(ev.target.value))}
-          />
-        </header>
-
-        <LayoutGroup>
-          <div className={styles.demoWrapper}>
-            <div className={clsx(styles.demoArea)} style={gridStructure}>
-              {range(numOfGroups).map((groupIndex) => (
-                <div key={`${id}-${groupIndex}`} className={styles.group}>
-                  {range(numOfItemsPerGroup).map((index) => {
-                    return (
-                      <motion.div
-                        key={`${id}-${numOfItemsPerGroup * groupIndex + index}`}
-                        className={styles.item}
-                        layoutId={`${id}-${
-                          numOfItemsPerGroup * groupIndex + index
-                        }`}
-                        transition={{
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 40,
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-        </LayoutGroup>
-
-        {includeRemainderArea && (
-          <div className={styles.remainderArea}>
-            <p className={styles.remainderHeading}>Remainder Area</p>
-
-            {range(remainder).map((index) => {
-              return <div key={index} className={styles.item} />;
-            })}
-          </div>
-        )}
-
-        <Equation
-          dividend={numOfItems}
-          divisor={numOfGroups}
-          remainder={remainder}
+    <Card as="section" className={styles.wrapper}>
+      <header className={styles.header}>
+        <SliderControl
+          label="Number of Groups"
+          className={styles.slider}
+          step={1}
+          min={1}
+          max={4}
+          value={numOfGroups}
+          onChange={(ev) => setNumOfGroups(Number(ev.target.value))}
         />
-      </Card>
-    </MotionConfig>
+      </header>
+
+      <LayoutGroup>
+        <div className={styles.demoWrapper}>
+          <div className={clsx(styles.demoArea)} style={gridStructure}>
+            {range(numOfGroups).map((groupIndex) => (
+              <div key={`${id}-${groupIndex}`} className={styles.group}>
+                {range(numOfItemsPerGroup).map((index) => {
+                  const layoutId = `${id}-${
+                    numOfItemsPerGroup * groupIndex + index
+                  }`;
+                  return (
+                    <motion.div
+                      key={layoutId}
+                      className={styles.item}
+                      layoutId={layoutId}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 40,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      </LayoutGroup>
+
+      {includeRemainderArea && (
+        <div className={styles.remainderArea}>
+          <p className={styles.remainderHeading}>Remainder Area</p>
+
+          {range(remainder).map((index) => {
+            return <div key={index} className={styles.item} />;
+          })}
+        </div>
+      )}
+
+      <Equation
+        dividend={numOfItems}
+        divisor={numOfGroups}
+        remainder={remainder}
+      />
+    </Card>
   );
 }
 
