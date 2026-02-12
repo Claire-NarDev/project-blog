@@ -83,19 +83,19 @@ function DivisionGroupsDemo({
           <div className={styles.remainderArea}>
             <p className={styles.remainderHeading}>Remainder Area</p>
 
-            {range(remainder).map((index) => {
-              const layoutId = `${id}-${
-                numOfItemsPerGroup * numOfGroups + index
-              }`;
-              return (
-                <motion.div
-                  key={layoutId}
-                  className={styles.item}
-                  layoutId={layoutId}
-                  transition={SPRING}
-                />
-              );
-            })}
+            {range(numOfItemsPerGroup * numOfGroups, numOfItems).reverse().map(
+              (index) => {
+                const layoutId = `${id}-${index}`;
+                return (
+                  <motion.div
+                    key={layoutId}
+                    className={styles.item}
+                    layoutId={layoutId}
+                    transition={SPRING}
+                  />
+                );
+              },
+            )}
           </div>
         )}
 
