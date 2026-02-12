@@ -11,6 +11,12 @@ import styles from "./DivisionGroupsDemo.module.css";
 
 import { motion, LayoutGroup } from "framer-motion";
 
+const SPRING = {
+  type: "spring",
+  stiffness: 300,
+  damping: 40,
+};
+
 function DivisionGroupsDemo({
   numOfItems = 12,
   initialNumOfGroups = 1,
@@ -37,20 +43,20 @@ function DivisionGroupsDemo({
         };
 
   return (
-    <Card as="section" className={styles.wrapper}>
-      <header className={styles.header}>
-        <SliderControl
-          label="Number of Groups"
-          className={styles.slider}
-          step={1}
-          min={1}
-          max={4}
-          value={numOfGroups}
-          onChange={(ev) => setNumOfGroups(Number(ev.target.value))}
-        />
-      </header>
+    <LayoutGroup>
+      <Card as="section" className={styles.wrapper}>
+        <header className={styles.header}>
+          <SliderControl
+            label="Number of Groups"
+            className={styles.slider}
+            step={1}
+            min={1}
+            max={4}
+            value={numOfGroups}
+            onChange={(ev) => setNumOfGroups(Number(ev.target.value))}
+          />
+        </header>
 
-      <LayoutGroup>
         <div className={styles.demoWrapper}>
           <div className={clsx(styles.demoArea)} style={gridStructure}>
             {range(numOfGroups).map((groupIndex) => (
@@ -64,11 +70,7 @@ function DivisionGroupsDemo({
                       key={layoutId}
                       className={styles.item}
                       layoutId={layoutId}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 40,
-                      }}
+                      transition={SPRING}
                     />
                   );
                 })}
@@ -76,24 +78,34 @@ function DivisionGroupsDemo({
             ))}
           </div>
         </div>
-      </LayoutGroup>
 
-      {includeRemainderArea && (
-        <div className={styles.remainderArea}>
-          <p className={styles.remainderHeading}>Remainder Area</p>
+        {includeRemainderArea && (
+          <div className={styles.remainderArea}>
+            <p className={styles.remainderHeading}>Remainder Area</p>
 
-          {range(remainder).map((index) => {
-            return <div key={index} className={styles.item} />;
-          })}
-        </div>
-      )}
+            {range(remainder).map((index) => {
+              const layoutId = `${id}-${
+                numOfItemsPerGroup * numOfGroups + index
+              }`;
+              return (
+                <motion.div
+                  key={layoutId}
+                  className={styles.item}
+                  layoutId={layoutId}
+                  transition={SPRING}
+                />
+              );
+            })}
+          </div>
+        )}
 
-      <Equation
-        dividend={numOfItems}
-        divisor={numOfGroups}
-        remainder={remainder}
-      />
-    </Card>
+        <Equation
+          dividend={numOfItems}
+          divisor={numOfGroups}
+          remainder={remainder}
+        />
+      </Card>
+    </LayoutGroup>
   );
 }
 
