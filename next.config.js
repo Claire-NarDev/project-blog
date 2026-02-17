@@ -1,5 +1,7 @@
-module.exports = {
+const nextConfig = {
   outputFileTracingIncludes: {
-    '/*': ['./content/**/*'],
+    "/*": ["./content/**/*"],
   },
 };
+
+module.exports = nextConfig;

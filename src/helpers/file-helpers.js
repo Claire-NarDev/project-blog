@@ -1,7 +1,9 @@
 import fs from "fs/promises";
+import { existsSync } from "node:fs";
 import path from "path";
 import matter from "gray-matter";
 import React from "react";
+import { notFound } from "next/navigation";
 
 export async function getBlogPostList() {
   const fileNames = await readDirectory("/content");
@@ -25,13 +27,21 @@ export async function getBlogPostList() {
 export const loadBlogPost = React.cache(async (slug) => {
   const rawContent = await readFile(`/content/${slug}.mdx`);
 
+  if (!rawContent) {
+    return notFound();
+  }
+
   const { data: frontmatter, content } = matter(rawContent);
 
   return { frontmatter, content };
 });
 
 function readFile(localPath) {
-  return fs.readFile(path.join(process.cwd(), localPath), "utf8");
+  const filePath = path.join(process.cwd(), localPath);
+  if (!existsSync(filePath)) {
+    return undefined;
+  }
+  return fs.readFile(filePath, "utf8");
 }
 
 function readDirectory(localPath) {
